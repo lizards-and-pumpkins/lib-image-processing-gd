@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd;
 
-use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidColorException;
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\ImageProcessingStrategy;
 
 class GdInscribeStrategy implements ImageProcessingStrategy
@@ -24,26 +25,16 @@ class GdInscribeStrategy implements ImageProcessingStrategy
      */
     private $backgroundColor;
 
-    /**
-     * @param string $width
-     * @param string $height
-     * @param string $backgroundColor
-     */
-    public function __construct($width, $height, $backgroundColor)
+    public function __construct(int $width, int $height, int $backgroundColor)
     {
         $this->width = $width;
         $this->height = $height;
         $this->backgroundColor = $backgroundColor;
     }
 
-    /**
-     * @param string $binaryImageData
-     * @return string
-     */
-    public function processBinaryImageData($binaryImageData)
+    public function processBinaryImageData(string $binaryImageData) : string
     {
         $this->validateImageDimensions($this->width, $this->height);
-        $this->validateBackgroundColor();
 
         $imageInfo = $this->getImageInfo($binaryImageData);
         $this->validateImageType($imageInfo);
@@ -57,11 +48,11 @@ class GdInscribeStrategy implements ImageProcessingStrategy
 
         $inscribeRatio = $this->getInscribeRatio($sourceWidth, $sourceHeight);
         
-        $inscribedWidth = $sourceWidth * $inscribeRatio;
-        $inscribedHeight = $sourceHeight * $inscribeRatio;
+        $inscribedWidth = (int) round($sourceWidth * $inscribeRatio);
+        $inscribedHeight = (int) round($sourceHeight * $inscribeRatio);
         
-        $xPosition = ($this->width - $inscribedWidth) / 2;
-        $yPosition = ($this->height - $inscribedHeight) / 2;
+        $xPosition = (int) round(($this->width - $inscribedWidth) / 2);
+        $yPosition = (int) round(($this->height - $inscribedHeight) / 2);
 
         imagecopyresampled(
             $resultImage,
@@ -79,21 +70,7 @@ class GdInscribeStrategy implements ImageProcessingStrategy
         return $this->getBinaryImageOutput($resultImage, $imageInfo);
     }
 
-    private function validateBackgroundColor()
-    {
-        if (!is_int($this->backgroundColor)) {
-            throw new InvalidColorException(
-                sprintf('Background fill color must be an integer, got "%s".', gettype($this->backgroundColor))
-            );
-        }
-    }
-
-    /**
-     * @param int $sourceWidth
-     * @param int $sourceHeight
-     * @return float
-     */
-    private function getInscribeRatio($sourceWidth, $sourceHeight)
+    private function getInscribeRatio(int $sourceWidth, int $sourceHeight) : float
     {
         $widthRatio = $this->width / $sourceWidth;
         $heightRatio = $this->height / $sourceHeight;

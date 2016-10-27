@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd;
 
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidBinaryImageDataException;
@@ -7,24 +9,8 @@ use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidImag
 
 trait ResizeImageTrait
 {
-    /**
-     * @param int $width
-     * @param int $height
-     */
-    private function validateImageDimensions($width, $height)
+    private function validateImageDimensions(int $width, int $height)
     {
-        if (! is_int($width)) {
-            throw new InvalidImageDimensionException(
-                sprintf('Expected integer as image width, got %s.', gettype($width))
-            );
-        }
-
-        if (! is_int($height)) {
-            throw new InvalidImageDimensionException(
-                sprintf('Expected integer as image height, got %s.', gettype($height))
-            );
-        }
-
         if ($width <= 0) {
             throw new InvalidImageDimensionException(
                 sprintf('Image width should be greater then zero, got %s.', $width)
@@ -42,7 +28,7 @@ trait ResizeImageTrait
      * @param string[] $imageInfo
      * @return string
      */
-    private function getSaveFunctionName(array $imageInfo)
+    private function getSaveFunctionName(array $imageInfo) : string
     {
         return 'image' . strtolower(preg_replace('/.*\//', '', $imageInfo['mime']));
     }
@@ -63,7 +49,7 @@ trait ResizeImageTrait
      * @param string $binaryImageData
      * @return mixed[]
      */
-    private function getImageInfo($binaryImageData)
+    private function getImageInfo(string $binaryImageData) : array
     {
         $imageInfo = @getimagesizefromstring($binaryImageData);
 
@@ -79,7 +65,7 @@ trait ResizeImageTrait
      * @param string[] $imageInfo
      * @return string
      */
-    private function getBinaryImageOutput($image, array $imageInfo)
+    private function getBinaryImageOutput($image, array $imageInfo) : string
     {
         $saveFunctionName = $this->getSaveFunctionName($imageInfo);
 

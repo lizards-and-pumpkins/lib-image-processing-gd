@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd;
 
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidBinaryImageDataException;
-use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidColorException;
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidImageDimensionException;
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\ImageProcessingStrategy;
 
@@ -22,14 +23,13 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
     
     public function testImageProcessorStrategyInterfaceIsImplemented()
     {
-        $strategy = new GdInscribeStrategy(1, 1, 'none');
+        $strategy = new GdInscribeStrategy(1, 1, 0);
         $this->assertInstanceOf(ImageProcessingStrategy::class, $strategy);
     }
 
     public function testExceptionIsThrownIfWidthIsNotAnInteger()
     {
-        $this->expectException(InvalidImageDimensionException::class);
-        $this->expectExceptionMessage('Expected integer as image width, got string.');
+        $this->expectException(\TypeError::class);
         (new GdInscribeStrategy('foo', 1, 0))->processBinaryImageData('');
     }
 
@@ -42,8 +42,7 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfHeightIsNotAnInteger()
     {
-        $this->expectException(InvalidImageDimensionException::class);
-        $this->expectExceptionMessage('Expected integer as image height, got string.');
+        $this->expectException(\TypeError::class);
         (new GdInscribeStrategy(1, 'foo', 0))->processBinaryImageData('');
     }
 
@@ -54,9 +53,9 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
         (new GdInscribeStrategy(1, -1, 0))->processBinaryImageData('');
     }
 
-    public function testExceptionIsThrownIfInvalidBackgroundColorIsSpecified()
+    public function testExceptionIsThrownIfBackgroundColorIsNotAnInteger()
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(\TypeError::class);
         (new GdInscribeStrategy(1, 1, 'red'))->processBinaryImageData('');
     }
 
@@ -77,10 +76,8 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider frameDimensionsProvider
-     * @param int $frameWidth
-     * @param int $frameHeight
      */
-    public function testImageIsInscribedIntoLandscapeFrame($frameWidth, $frameHeight)
+    public function testImageIsInscribedIntoLandscapeFrame(int $frameWidth, int $frameHeight)
     {
         $imageStream = file_get_contents(__DIR__ . '/../fixture/image.jpg');
 
@@ -96,7 +93,7 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array[]
      */
-    public function frameDimensionsProvider()
+    public function frameDimensionsProvider() : array
     {
         return [
             [15, 10],
