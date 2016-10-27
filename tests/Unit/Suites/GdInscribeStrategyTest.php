@@ -30,7 +30,7 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
     public function testExceptionIsThrownIfWidthIsNotAnInteger()
     {
         $this->expectException(\TypeError::class);
-        (new GdInscribeStrategy('foo', 1, 0))->processBinaryImageData('');
+        new GdInscribeStrategy('foo', 1, 0);
     }
 
     public function testExceptionIsThrownIfWidthIsNotPositive()
@@ -43,7 +43,7 @@ class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
     public function testExceptionIsThrownIfHeightIsNotAnInteger()
     {
         $this->expectException(\TypeError::class);
-        (new GdInscribeStrategy(1, 'foo', 0))->processBinaryImageData('');
+        new GdInscribeStrategy(1, 'foo', 0);
     }
 
     public function testExceptionIsThrownIfHeightIsNotPositive()

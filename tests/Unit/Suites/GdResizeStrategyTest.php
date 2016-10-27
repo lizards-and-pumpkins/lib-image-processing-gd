@@ -30,7 +30,7 @@ class GdResizeStrategyTest extends \PHPUnit_Framework_TestCase
     public function testExceptionIsThrownIfWidthIsNotAnInteger()
     {
         $this->expectException(\TypeError::class);
-        (new GdResizeStrategy('foo', 1))->processBinaryImageData('');
+        new GdResizeStrategy('foo', 1);
     }
 
     public function testExceptionIsThrownIfWidthIsNotPositive()
@@ -43,7 +43,7 @@ class GdResizeStrategyTest extends \PHPUnit_Framework_TestCase
     public function testExceptionIsThrownIfHeightIsNotAnInteger()
     {
         $this->expectException(\TypeError::class);
-        (new GdResizeStrategy(1, 'foo'))->processBinaryImageData('');
+        new GdResizeStrategy(1, 'foo');
     }
 
     public function testExceptionIsThrownIfHeightIsNotPositive()
