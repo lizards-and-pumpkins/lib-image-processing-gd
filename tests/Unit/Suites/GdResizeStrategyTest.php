@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd;
 
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidBinaryImageDataException;
@@ -27,9 +29,8 @@ class GdResizeStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfWidthIsNotAnInteger()
     {
-        $this->expectException(InvalidImageDimensionException::class);
-        $this->expectExceptionMessage('Expected integer as image width, got string.');
-        (new GdResizeStrategy('foo', 1))->processBinaryImageData('');
+        $this->expectException(\TypeError::class);
+        new GdResizeStrategy('foo', 1);
     }
 
     public function testExceptionIsThrownIfWidthIsNotPositive()
@@ -41,9 +42,8 @@ class GdResizeStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfHeightIsNotAnInteger()
     {
-        $this->expectException(InvalidImageDimensionException::class);
-        $this->expectExceptionMessage('Expected integer as image height, got string.');
-        (new GdResizeStrategy(1, 'foo'))->processBinaryImageData('');
+        $this->expectException(\TypeError::class);
+        new GdResizeStrategy(1, 'foo');
     }
 
     public function testExceptionIsThrownIfHeightIsNotPositive()
