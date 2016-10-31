@@ -11,17 +11,17 @@ class GdInscribeStrategy implements ImageProcessingStrategy
     use ResizeImageTrait;
 
     /**
-     * @var string
+     * @var int
      */
     private $width;
 
     /**
-     * @var string
+     * @var int
      */
     private $height;
 
     /**
-     * @var string
+     * @var int
      */
     private $backgroundColor;
 
