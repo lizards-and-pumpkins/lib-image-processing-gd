@@ -7,12 +7,13 @@ namespace LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd;
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidBinaryImageDataException;
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Exception\InvalidImageDimensionException;
 use LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\ImageProcessingStrategy;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd\GdInscribeStrategy
  * @covers \LizardsAndPumpkins\Import\ImageStorage\ImageProcessing\Gd\ResizeImageTrait
  */
-class GdInscribeStrategyTest extends \PHPUnit_Framework_TestCase
+class GdInscribeStrategyTest extends TestCase
 {
     protected function setUp()
     {
